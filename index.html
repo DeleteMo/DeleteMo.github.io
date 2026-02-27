@@ -1,0 +1,879 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>潮汕海龟汤 - 圣杯问卜</title>
+    
+    <!-- External Libraries -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdn.staticfile.net/font-awesome/6.5.1/css/all.min.css" rel="stylesheet">
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Ma+Shan+Zheng&family=Noto+Serif+SC:wght@400;700&display=swap" rel="stylesheet">
+
+    <!-- Tailwind Config -->
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        deepRed: '#7f1d1d',
+                        mainRed: '#b91c1c',
+                        gold: '#f59e0b',
+                        lightGold: '#fcd34d',
+                        paper: '#fffbeb',
+                        ink: '#1c1917'
+                    },
+                    fontFamily: {
+                        calligraphy: ['"Ma Shan Zheng"', 'cursive'],
+                        serif: ['"Noto Serif SC"', 'serif'],
+                    },
+                    spacing: {
+                        'spacing-md': '1.5rem',
+                        'spacing-lg': '2.5rem',
+                    },
+                    boxShadow: {
+                        'card': '0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06)',
+                        'card-hover': '0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05), 0 0 0 2px rgba(245, 158, 11, 0.3)',
+                        'floating': '0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04)',
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        /* Custom Styles for 3D Cup and Animations */
+        body {
+            background-color: #f5f5f4;
+            background-image: radial-gradient(#e7e5e4 1px, transparent 1px);
+            background-size: 20px 20px;
+        }
+
+        .paper-texture {
+            background-color: #fffbeb;
+            background-image: url("data:image/svg+xml,%3Csvg width='100' height='100' viewBox='0 0 100 100' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M11 18c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zm48 25c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zm-43-7c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zm63 31c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zM34 90c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zm56-76c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zM12 86c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm28-65c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm23-11c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm-6 60c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm29 22c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zM32 63c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm57-13c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm-9-21c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM60 91c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM35 41c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM12 60c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2z' fill='%23f59e0b' fill-opacity='0.05' fill-rule='evenodd'/%3E%3C/svg%3E");
+        }
+
+        /* 3D Cup Styles */
+        .scene {
+            perspective: 1000px;
+            width: 240px;
+            height: 200px;
+            margin: 0 auto;
+            position: relative;
+        }
+
+        .cup-container {
+            width: 100px;
+            height: 50px;
+            position: absolute;
+            transform-style: preserve-3d;
+            transition: transform 1.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        .cup-left {
+            left: 20px;
+            top: 100px;
+        }
+
+        .cup-right {
+            right: 20px;
+            top: 100px;
+        }
+
+        .cup-face {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            backface-visibility: hidden;
+            border-radius: 0 0 50% 50% / 0 0 100% 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: inset 0 0 10px rgba(0,0,0,0.3);
+            border: 2px solid #b91c1c;
+        }
+
+        /* Concave side (Front) - Text "Fu" or "Shou" */
+        .cup-front {
+            background: radial-gradient(circle at 50% 30%, #fffbeb, #fcd34d);
+            transform: rotateX(0deg);
+            color: #7f1d1d;
+            font-family: 'Ma Shan Zheng', cursive;
+            font-size: 2rem;
+            text-shadow: 1px 1px 0px rgba(0,0,0,0.1);
+        }
+
+        /* Convex side (Back) - Pattern */
+        .cup-back {
+            background: radial-gradient(circle at 50% 70%, #b91c1c, #7f1d1d);
+            transform: rotateX(180deg);
+            background-image: repeating-linear-gradient(45deg, transparent, transparent 5px, rgba(255,255,255,0.1) 5px, rgba(255,255,255,0.1) 10px);
+        }
+
+        /* Animation Keyframes */
+        @keyframes throwUp {
+            0% { transform: translateY(0) rotateX(0) rotateZ(0); }
+            50% { transform: translateY(-150px) rotateX(720deg) rotateZ(360deg); }
+            100% { transform: translateY(0) rotateX(var(--target-rotate)) rotateZ(var(--target-z)); }
+        }
+
+        .animating {
+            animation: throwUp 1.5s forwards;
+        }
+
+        /* Scrollbar styling */
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 8px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: rgba(127, 29, 29, 0.1);
+            border-radius: 4px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: #b91c1c;
+            border-radius: 4px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+            background: #7f1d1d;
+        }
+
+        /* Toast Animation */
+        .toast-enter {
+            transform: translateY(-100%);
+            opacity: 0;
+        }
+        .toast-enter-active {
+            transform: translateY(0);
+            opacity: 1;
+            transition: all 0.3s ease-out;
+        }
+        .toast-exit {
+            transform: translateY(0);
+            opacity: 1;
+        }
+        .toast-exit-active {
+            transform: translateY(-100%);
+            opacity: 0;
+            transition: all 0.3s ease-in;
+        }
+    </style>
+</head>
+<body class="text-ink font-serif min-h-screen flex flex-col">
+
+    <!-- Toast Notification Container -->
+    <div id="toast-container" class="fixed top-4 left-1/2 transform -translate-x-1/2 z-50 flex flex-col gap-2 pointer-events-none"></div>
+
+    <!-- Header -->
+    <header class="bg-deepRed text-paper shadow-lg sticky top-0 z-40 border-b-4 border-gold">
+        <div class="container mx-auto px-4 py-4 flex justify-between items-center">
+            <div class="flex items-center gap-3">
+                <i class="fa-solid fa-dragon text-gold text-3xl animate-pulse"></i>
+                <h1 class="text-2xl sm:text-3xl md:text-4xl font-calligraphy tracking-widest text-lightGold">圣杯问卜 · 海龟汤</h1>
+            </div>
+            <div class="hidden sm:flex items-center gap-4 text-sm font-bold text-lightGold/80">
+                <span><i class="fa-solid fa-circle-question mr-1"></i> 问卜</span>
+                <span><i class="fa-solid fa-book-open mr-1"></i> 汤面</span>
+                <span><i class="fa-solid fa-clock-rotate-left mr-1"></i> 历史</span>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="flex-grow container mx-auto px-4 py-6 lg:py-8">
+        
+        <!-- Controls & Puzzle Selection -->
+        <section class="mb-6 flex flex-col sm:flex-row justify-between items-center bg-white p-4 rounded-lg shadow-card border border-gold/20">
+            <div class="flex items-center gap-2 w-full sm:w-auto mb-2 sm:mb-0">
+                <label for="puzzle-select" class="text-deepRed font-bold whitespace-nowrap">选择汤面：</label>
+                <select id="puzzle-select" class="flex-grow sm:flex-grow-0 p-2 border border-mainRed rounded bg-paper focus:outline-none focus:ring-2 focus:ring-gold transition-all cursor-pointer">
+                    <!-- Options populated by JS -->
+                </select>
+            </div>
+            <button id="btn-reset" class="w-full sm:w-auto px-4 py-2 bg-mainRed hover:bg-deepRed text-white rounded shadow transition-transform hover:scale-105 active:scale-95 flex items-center justify-center gap-2">
+                <i class="fa-solid fa-rotate-right"></i> 重置问卜
+            </button>
+        </section>
+
+        <!-- Grid Layout -->
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 lg:gap-8 items-start">
+            
+            <!-- Left Column: Puzzle Info -->
+            <section class="bg-paper rounded-xl shadow-card p-6 border-t-4 border-deepRed flex flex-col h-full" aria-labelledby="puzzle-title">
+                <div class="mb-4 pb-2 border-b-2 border-gold/30">
+                    <span id="puzzle-tag" class="inline-block px-3 py-1 bg-mainRed/10 text-mainRed text-xs font-bold rounded-full mb-2">标签</span>
+                    <h2 id="puzzle-title" class="text-2xl sm:text-3xl font-bold text-deepRed font-calligraphy leading-tight">
+                        <!-- Title populated by JS -->
+                    </h2>
+                </div>
+                <div class="prose prose-lg text-gray-800 flex-grow">
+                    <p id="puzzle-content" class="text-base sm:text-lg leading-relaxed whitespace-pre-wrap">
+                        <!-- Content populated by JS -->
+                    </p>
+                </div>
+                <div class="mt-4 p-3 bg-lightGold/20 rounded border border-gold/30 text-sm text-gray-600">
+                    <i class="fa-solid fa-lightbulb text-gold mr-2"></i>
+                    提示：输入你的猜测，圣杯将指引你真相的方向。
+                </div>
+            </section>
+
+            <!-- Center Column: Holy Cup Animation (The Stage) -->
+            <section class="bg-gradient-to-b from-deepRed to-mainRed rounded-xl shadow-floating p-6 flex flex-col items-center justify-center min-h-[400px] relative overflow-hidden" aria-label="圣杯问卜区域">
+                <!-- Decorative Background Elements -->
+                <div class="absolute top-0 left-0 w-full h-full opacity-10 pointer-events-none">
+                    <i class="fa-solid fa-yin-yang absolute top-4 left-4 text-6xl text-gold"></i>
+                    <i class="fa-solid fa-yin-yang absolute bottom-4 right-4 text-6xl text-gold transform scale-x-[-1]"></i>
+                </div>
+
+                <h3 class="text-gold font-calligraphy text-xl sm:text-2xl mb-8 z-10 tracking-widest">圣杯显像</h3>
+
+                <!-- The Scene -->
+                <div class="scene z-10">
+                    <!-- Left Cup (Fu) -->
+                    <div id="cup-left" class="cup-container cup-left">
+                        <div class="cup-face cup-front">福</div>
+                        <div class="cup-face cup-back"></div>
+                    </div>
+                    <!-- Right Cup (Shou) -->
+                    <div id="cup-right" class="cup-container cup-right">
+                        <div class="cup-face cup-front">寿</div>
+                        <div class="cup-face cup-back"></div>
+                    </div>
+                </div>
+
+                <!-- Result Display - 彻底拉开结果区域和底部提示的距离 -->
+                <div id="result-display" class="mt-16 text-center z-10 opacity-0 transition-opacity duration-500 pb-8">
+                    <div id="result-icon" class="text-5xl mb-2 text-lightGold drop-shadow-lg"></div>
+                    <div id="result-text" class="text-2xl font-bold text-white font-calligraphy"></div>
+                    <div id="result-desc" class="text-sm text-lightGold/80 mt-4 block min-h-[20px]">
+                    </div>
+                </div>
+
+                <!-- Instruction Text - 移到更底部，增加背景遮罩避免重叠 -->
+                <div id="instruction-text" class="absolute bottom-4 text-center text-lightGold/60 text-sm w-full z-10 transition-all duration-500 bg-deepRed/50 py-2 px-4 rounded-t-lg">
+                    输入问题并提交以投掷圣杯
+                </div>
+            </section>
+
+            <!-- Right Column: Input & History -->
+            <section class="flex flex-col gap-6">
+                
+                <!-- Input Area -->
+                <div class="bg-white rounded-xl shadow-card p-5 border border-gray-200">
+                    <label for="user-input" class="block text-deepRed font-bold mb-2 text-lg">
+                        <i class="fa-solid fa-pen-nib mr-2"></i>提问 / 猜测
+                    </label>
+                    <div class="relative">
+                        <textarea 
+                            id="user-input" 
+                            class="w-full p-3 border-2 border-gray-200 rounded-lg focus:border-gold focus:ring-2 focus:ring-gold/20 outline-none transition-all resize-none h-24 text-gray-700"
+                            placeholder="例如：是因为热气球吗？"
+                            aria-label="输入你的猜测"
+                        ></textarea>
+                        <button 
+                            id="btn-voice" 
+                            class="absolute bottom-3 right-3 text-gray-400 hover:text-mainRed transition-colors p-2 rounded-full hover:bg-gray-100"
+                            title="语音输入"
+                            aria-label="使用语音输入"
+                        >
+                            <i class="fa-solid fa-microphone"></i>
+                        </button>
+                    </div>
+                    
+                    <div class="flex gap-3 mt-3">
+                        <button 
+                            id="btn-submit" 
+                            class="flex-1 bg-gold hover:bg-yellow-500 text-deepRed font-bold py-2 px-4 rounded-lg shadow transition-transform hover:scale-[1.02] active:scale-95 flex items-center justify-center gap-2"
+                        >
+                            <i class="fa-solid fa-paper-plane"></i> 投掷问卜
+                        </button>
+                        <button 
+                            id="btn-clear" 
+                            class="px-4 py-2 border border-gray-300 rounded-lg text-gray-600 hover:bg-gray-50 transition-colors"
+                            title="清空输入 (Esc)"
+                        >
+                            <i class="fa-solid fa-eraser"></i>
+                        </button>
+                    </div>
+                    <div class="text-xs text-gray-400 mt-2 text-right">
+                        快捷键: <span class="font-mono bg-gray-100 px-1 rounded">Enter</span> 提交, <span class="font-mono bg-gray-100 px-1 rounded">Esc</span> 清除
+                    </div>
+                </div>
+
+                <!-- History Area -->
+                <div class="bg-white rounded-xl shadow-card p-5 border border-gray-200 flex flex-col flex-grow min-h-[40vh] max-h-[60vh]">
+                    <div class="flex justify-between items-center mb-3 pb-2 border-b border-gray-100">
+                        <h3 class="text-deepRed font-bold text-lg">
+                            <i class="fa-solid fa-scroll mr-2"></i>问卜记录
+                        </h3>
+                        <span id="history-count" class="text-xs bg-gray-100 text-gray-500 px-2 py-1 rounded-full">0 条</span>
+                    </div>
+                    
+                    <div id="history-list" class="flex-grow overflow-y-auto custom-scrollbar pr-2 space-y-3">
+                        <!-- Empty State -->
+                        <div id="empty-state" class="h-full flex flex-col items-center justify-center text-gray-400 py-8">
+                            <i class="fa-solid fa-wind text-4xl mb-3 opacity-30"></i>
+                            <p class="text-sm">暂无记录，请开始提问</p>
+                        </div>
+                        <!-- History items will be injected here -->
+                    </div>
+                </div>
+
+            </section>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-deepRed text-lightGold/60 py-6 text-center text-sm mt-8">
+        <p class="font-calligraphy text-lg mb-1">心诚则灵 · 圣杯解惑</p>
+        <p>&copy; 2026 潮汕海龟汤民俗体验馆</p>
+    </footer>
+
+    <!-- JavaScript Logic -->
+    <script>
+        // --- Data: Puzzle Database ---
+        const puzzles = [
+            {
+                title: "半根火柴",
+                content: "一个人死在沙漠里，手里紧紧捏着半根火柴。周围没有任何足迹，他是怎么死的？",
+                tag: "死亡谜题",
+                affirmative: ["热气球", "抽签", "超重", "漏气", "扔东西", "跳下去", "同伴", "朋友", "气球"],
+                negative: ["谋杀", "自杀", "渴死", "饿死", "冻死", "迷路", "野兽", "飞机", "降落伞", "一个人"],
+                irrelevant: ["火柴", "为什么", "哪里", "谁", "名字", "时间"]
+            },
+            {
+                title: "红鞋子",
+                content: "女人买了一双红色的高跟鞋，第二天她穿着这双鞋去上班，然后她就死了。为什么？",
+                tag: "心理反转",
+                affirmative: ["马戏团", "走钢丝", "平衡", "丈夫", "枪", "杀", "保险金", "失误", "掉下来", "射杀"],
+                negative: ["车祸", "摔倒", "高跟鞋本身", "毒", "病", "上班", "公司", "同事", "鞋质量"],
+                irrelevant: ["红色", "什么牌子", "多少钱", "漂亮", "喜欢"]
+            },
+            {
+                title: "电梯与雨伞",
+                content: "一个男人住在10楼。每天早上他坐电梯下楼去上班。晚上回家时，如果不下雨，他坐到7楼然后爬楼梯上去。如果下雨，他直接坐到10楼。为什么？",
+                tag: "逻辑悖论",
+                affirmative: ["矮", "侏儒", "身高", "够不到", "按钮", "雨伞", "按", "手短", "小孩"],
+                negative: ["锻炼", "减肥", "7楼朋友", "电梯坏了", "怕黑", "省钱", "喜欢爬楼", "找人"],
+                irrelevant: ["工作", "几点", "几楼", "名字", "衣服"]
+            },
+            {
+                title: "窗帘动了",
+                content: "男人在雨夜狂奔回家，见到妻子后惊恐地说'窗帘动了'，随即倒地死亡。为什么？",
+                tag: "悬疑/反转",
+                affirmative: ["间谍", "暗号", "特工", "下毒", "任务", "情报", "敌人", "杀"],
+                negative: ["鬼", "贼", "吓死", "心脏病", "真的窗帘", "风", "意外"],
+                irrelevant: ["雨", "跑", "妻子", "家"]
+            },
+            {
+                title: "吃盐的女人",
+                content: "餐厅里，女子吃光整盘盐却安然无恙，服务员看到后立刻报警。",
+                tag: "社会观察/误会",
+                affirmative: ["味觉", "障碍", "骨灰", "骨灰盒", "偷", "误认", "死人", "遗体"],
+                negative: ["自杀", "绝食", "表演", "怪癖", "盐本身", "警察抓她"],
+                irrelevant: ["餐厅", "服务员", "报警", "女子"]
+            },
+            {
+                title: "盲人与剪刀",
+                content: "盲人买剪刀，用手比划剪东西动作，店员却拿了菜刀给他。",
+                tag: "沟通误解/生活常识",
+                affirmative: ["手语", "聋哑", "手势", "像刀", "误解", "沟通"],
+                negative: ["瞎", "看不见", "菜刀", "剪刀", "店员坏", "恶作剧"],
+                irrelevant: ["买", "商店", "比划"]
+            },
+            {
+                title: "葬礼上的掌声",
+                content: "葬礼上妹妹杀死亲姐，宾客却鼓掌叫好。",
+                tag: "反转/艺术表演",
+                affirmative: ["演戏", "剧场", "表演", "假死", "剧本", "沉浸式", "观众"],
+                negative: ["仇恨", "疯子", "变态", "真的杀", "邪恶"],
+                irrelevant: ["葬礼", "妹妹", "姐姐", "掌声"]
+            },
+            {
+                title: "空信箱",
+                content: "男人每天准点给空信箱投信，直到搬家那天突然猝死。",
+                tag: "情感/医疗伦理",
+                affirmative: ["心脏", "移植", "捐赠", "感谢", "假信箱", "死人", "器官"],
+                negative: ["邮递员", "间谍", "定时炸弹", "诅咒", "鬼魂"],
+                irrelevant: ["搬家", "猝死", "信"]
+            },
+            {
+                title: "有味道的婴儿车",
+                content: "超市里婴儿车传出腐臭味，母亲笑着说：'他睡得很香'。",
+                tag: "职业反差/科学",
+                affirmative: ["法医", "器官", "标本", "尸体", "工作", "冷藏"],
+                negative: ["死婴", "垃圾", "变态", "疯子", "真的婴儿"],
+                irrelevant: ["超市", "婴儿车", "臭", "母亲"]
+            },
+            {
+                title: "吸血鬼医生",
+                content: "医生给患者开维生素，患者服药后死亡，医生却获表彰。",
+                tag: "幽默/幻想设定",
+                affirmative: ["吸血鬼", "大蒜", "怪物", "幻想", "童话"],
+                negative: ["医疗事故", "毒药", "谋杀", "过敏", "假药"],
+                irrelevant: ["医生", "维生素", "表彰", "死"]
+            },
+            {
+                title: "熊脚印",
+                content: "登山者看到帐篷外有熊脚印，笑着继续睡觉最终遇难。",
+                tag: "自然生存/认知偏差",
+                affirmative: ["雪盲", "看不见", "水渍", "破洞", "失温", "冷死"],
+                negative: ["熊", "野兽", "自杀", "不想活", "傻"],
+                irrelevant: ["脚印", "帐篷", "笑", "睡"]
+            },
+            {
+                title: "互换衣服",
+                content: "夫妻逛商场时突然互换衣服，次日双双升职加薪。",
+                tag: "科技/职场",
+                affirmative: ["间谍", "人脸识别", "躲避", "偷", "机密", "换装"],
+                negative: ["变态", "玩游戏", "行为艺术", "衣服脏"],
+                irrelevant: ["夫妻", "商场", "升职", "加薪"]
+            },
+            {
+                title: "偷便当的流浪汉",
+                content: "流浪汉连续七天拿走便利店过期便当，第八天老板跪地痛哭。",
+                tag: "情感/社会温情",
+                affirmative: ["纸条", "绝症", "儿子", "鼓励", "传递", "故意"],
+                negative: ["老板坏", "抓小偷", "报警", "恨流浪汉"],
+                irrelevant: ["便当", "过期", "流浪汉", "哭"]
+            },
+            {
+                title: "镜面房间",
+                content: "侦探说'凶手是左撇子'，在场所有人却同时举起右手。",
+                tag: "视觉错觉/物理现象",
+                affirmative: ["镜子", "反射", "倒影", "错觉", "镜面"],
+                negative: ["撒谎", "吓唬", "魔术", "右手", "不是左手"],
+                irrelevant: ["侦探", "凶手", "左撇子", "举手"]
+            },
+            {
+                title: "跨越日界线",
+                content: "男子听到'12点整'立刻跳楼，落地后露出笑容。",
+                tag: "地理/时间概念",
+                affirmative: ["时区", "日界线", "时间", "飞机", "飞行员", "重复"],
+                negative: ["自杀", "疯子", "开心死", "游戏"],
+                irrelevant: ["12点", "跳楼", "笑", "落地"]
+            },
+            {
+                title: "毒巧克力",
+                content: "女孩给乞丐喂巧克力，乞丐吃完死亡，女孩被判无罪。",
+                tag: "法律/正义",
+                affirmative: ["毒品", "警察", "卧底", "伪装", "不知情", "保护"],
+                negative: ["故意杀人", "毒药", "冤枉", "法律漏洞"],
+                irrelevant: ["女孩", "乞丐", "巧克力", "死", "无罪"]
+            },
+            {
+                title: "隐形墨水",
+                content: "小说家写完结局突然自焚，书却成为畅销经典。",
+                tag: "艺术/创作",
+                affirmative: ["隐形墨水", "显影", "表演", "艺术", "设计"],
+                negative: ["疯了", "绝望", "意外", "诅咒"],
+                irrelevant: ["小说家", "自焚", "书", "结局"]
+            },
+            {
+                title: "共用一只眼",
+                content: "双胞胎姐妹从不同时睁眼，直到18岁生日宴发生命案。",
+                tag: "心理/家庭关系",
+                affirmative: ["心理", "假装", "演戏", "健全", "抢夺", "义眼"],
+                negative: ["真的共用", "怪物", "连体", "变异"],
+                irrelevant: ["双胞胎", "睁眼", "生日", "命案"]
+            },
+            {
+                title: "透明箱子",
+                content: "渔夫捞出透明箱子后疯狂大笑，当晚全村搬离。",
+                tag: "环境/科技警示",
+                affirmative: ["核废料", "辐射", "危险", "折射", "玻璃", "标志"],
+                negative: ["宝藏", "金子", "外星人", "神迹"],
+                irrelevant: ["渔夫", "箱子", "笑", "搬离"]
+            },
+            {
+                title: "洋葱凶手",
+                content: "厨师切洋葱时流泪死亡，凶器是菜刀。",
+                tag: "职业/心理动机",
+                affirmative: ["自杀", "伪装", "过敏", "掩盖", "自裁", "犯罪"],
+                negative: ["他杀", "意外", "洋葱有毒", "菜刀杀人"],
+                irrelevant: ["厨师", "洋葱", "流泪", "死"]
+            },
+            {
+                title: "魔术师的火",
+                content: "魔术师表演'断头台'后，观众席有人头破血流。",
+                tag: "科学原理/巧合",
+                affirmative: ["望远镜", "反射", "阳光", "聚焦", "点火", "假发"],
+                negative: ["魔术", "真的断头", "飞刀", "爆炸"],
+                irrelevant: ["魔术师", "断头台", "观众", "流血"]
+            },
+            {
+                title: "旋转的新娘",
+                content: "新娘在婚礼现场不停旋转，最终幸福微笑死去。",
+                tag: "科幻/机械生命",
+                affirmative: ["机器人", "雕塑", "发电", "停电", "没电", "机械"],
+                negative: ["累死", "转晕", "诅咒", "中毒"],
+                irrelevant: ["新娘", "旋转", "婚礼", "笑", "死"]
+            },
+            {
+                title: "红月",
+                content: "男孩说'月亮变红了'，次日全村消失。",
+                tag: "生存/感知差异",
+                affirmative: ["核爆", "光闪", "防空洞", "躲藏", "色盲", "看错"],
+                negative: ["鬼", "外星人", "穿越", "真的月亮"],
+                irrelevant: ["男孩", "红月", "消失", "村庄"]
+            }
+        ];
+
+        // --- State Management ---
+        let currentPuzzleIndex = 0;
+        let history = [];
+        let isAnimating = false;
+        let recognition = null;
+
+        // --- DOM Elements ---
+        const puzzleSelect = document.getElementById('puzzle-select');
+        const puzzleTitle = document.getElementById('puzzle-title');
+        const puzzleContent = document.getElementById('puzzle-content');
+        const puzzleTag = document.getElementById('puzzle-tag');
+        const userInput = document.getElementById('user-input');
+        const btnSubmit = document.getElementById('btn-submit');
+        const btnClear = document.getElementById('btn-clear');
+        const btnReset = document.getElementById('btn-reset');
+        const btnVoice = document.getElementById('btn-voice');
+        const historyList = document.getElementById('history-list');
+        const emptyState = document.getElementById('empty-state');
+        const historyCount = document.getElementById('history-count');
+        const cupLeft = document.getElementById('cup-left');
+        const cupRight = document.getElementById('cup-right');
+        const resultDisplay = document.getElementById('result-display');
+        const resultIcon = document.getElementById('result-icon');
+        const resultText = document.getElementById('result-text');
+        const resultDesc = document.getElementById('result-desc');
+        const instructionText = document.getElementById('instruction-text');
+        const toastContainer = document.getElementById('toast-container');
+
+        // --- Initialization ---
+        function init() {
+            // Populate Select
+            puzzles.forEach((p, index) => {
+                const option = document.createElement('option');
+                option.value = index;
+                option.textContent = `${index + 1}. ${p.title}`;
+                puzzleSelect.appendChild(option);
+            });
+
+            // Load initial puzzle
+            loadPuzzle(0);
+
+            // Setup Voice Recognition
+            if ('webkitSpeechRecognition' in window || 'SpeechRecognition' in window) {
+                const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+                recognition = new SpeechRecognition();
+                recognition.lang = 'zh-CN';
+                recognition.continuous = false;
+                recognition.interimResults = false;
+
+                recognition.onstart = () => {
+                    btnVoice.classList.add('text-mainRed', 'animate-pulse');
+                    showToast('正在聆听...', 'info');
+                };
+
+                recognition.onend = () => {
+                    btnVoice.classList.remove('text-mainRed', 'animate-pulse');
+                };
+
+                recognition.onresult = (event) => {
+                    const transcript = event.results[0][0].transcript;
+                    userInput.value = transcript;
+                    userInput.focus();
+                };
+
+                recognition.onerror = (event) => {
+                    console.error('Speech recognition error', event.error);
+                    btnVoice.classList.remove('text-mainRed', 'animate-pulse');
+                    showToast('语音识别失败，请重试', 'error');
+                };
+            } else {
+                btnVoice.style.display = 'none'; // Hide if not supported
+            }
+        }
+
+        // --- Core Functions ---
+
+        function loadPuzzle(index) {
+            currentPuzzleIndex = index;
+            const puzzle = puzzles[index];
+            
+            // Update UI with animation
+            puzzleTitle.style.opacity = 0;
+            puzzleContent.style.opacity = 0;
+            
+            setTimeout(() => {
+                puzzleTitle.textContent = puzzle.title;
+                puzzleContent.textContent = puzzle.content;
+                puzzleTag.textContent = puzzle.tag;
+                puzzleTitle.style.opacity = 1;
+                puzzleContent.style.opacity = 1;
+            }, 200);
+
+            resetGame();
+        }
+
+        function resetGame() {
+            history = [];
+            renderHistory();
+            userInput.value = '';
+            resetCups();
+            resultDisplay.style.opacity = '0';
+            instructionText.textContent = "输入问题并提交以投掷圣杯";
+            instructionText.style.transform = "translateY(0)";
+            showToast('已切换至新汤面，历史记录已清空', 'success');
+        }
+
+        function resetCups() {
+            // Reset to initial state (Concave up / Front visible)
+            cupLeft.style.transform = 'rotateX(0deg)';
+            cupRight.style.transform = 'rotateX(0deg)';
+            cupLeft.classList.remove('animating');
+            cupRight.classList.remove('animating');
+        }
+
+        function determineResult(inputText) {
+            const puzzle = puzzles[currentPuzzleIndex];
+            const text = inputText.trim();
+            
+            if (!text) return 'xiao'; // Default to laugh if empty
+
+            // Check Affirmative (Sheng)
+            if (puzzle.affirmative.some(k => text.includes(k))) return 'sheng';
+            
+            // Check Negative (Yin)
+            if (puzzle.negative.some(k => text.includes(k))) return 'yin';
+            
+            // Check Irrelevant (Xiao)
+            if (puzzle.irrelevant.some(k => text.includes(k))) return 'xiao';
+            
+            // Default/Fallback logic
+            // If it contains "是" (is) or positive vibes, slightly higher chance of Sheng, otherwise Xiao
+            return 'xiao'; 
+        }
+
+        function throwCups(resultType) {
+            if (isAnimating) return;
+            isAnimating = true;
+            instructionText.textContent = "圣杯投掷中...";
+            instructionText.style.transform = "translateY(-4px)";
+            resultDisplay.style.opacity = '0';
+
+            // Define target rotations based on result
+            // 0deg = Concave (Front/Fu/Shou visible)
+            // 180deg = Convex (Back visible)
+            
+            let leftRot = 0;
+            let rightRot = 0;
+            let iconClass = '';
+            let textResult = '';
+            let descResult = '';
+
+            if (resultType === 'sheng') {
+                // Holy Cup: Left Concave (0), Right Convex (180)
+                leftRot = 0;
+                rightRot = 180;
+                iconClass = 'fa-solid fa-circle-check';
+                textResult = '圣杯';
+                descResult = '大吉！猜测方向正确';
+            } else if (resultType === 'yin') {
+                // Yin Cup: Both Convex (180)
+                leftRot = 180;
+                rightRot = 180;
+                iconClass = 'fa-solid fa-circle-xmark';
+                textResult = '阴杯';
+                descResult = '凶。猜测方向错误';
+            } else {
+                // Laugh Cup: Both Concave (0)
+                leftRot = 0;
+                rightRot = 0;
+                iconClass = 'fa-solid fa-face-laugh-beam';
+                textResult = '笑杯';
+                descResult = '无关痛痒，圣杯在笑你';
+            }
+
+            // Set CSS variables for animation end state
+            // Add some randomness to Z rotation for realism
+            const zRand = Math.floor(Math.random() * 60) - 30; 
+
+            cupLeft.style.setProperty('--target-rotate', `${leftRot}deg`);
+            cupLeft.style.setProperty('--target-z', `${zRand}deg`);
+            
+            cupRight.style.setProperty('--target-rotate', `${rightRot}deg`);
+            cupRight.style.setProperty('--target-z', `${zRand}deg`);
+
+            // Trigger Animation
+            cupLeft.classList.add('animating');
+            cupRight.classList.add('animating');
+
+            // Wait for animation to finish
+            setTimeout(() => {
+                isAnimating = false;
+                showResultUI(iconClass, textResult, descResult);
+                instructionText.textContent = "投掷完成，可继续提问";
+                instructionText.style.transform = "translateY(0)";
+            }, 1500);
+        }
+
+        function showResultUI(icon, text, desc) {
+            resultIcon.className = `text-5xl mb-2 text-lightGold drop-shadow-lg ${icon}`;
+            resultText.textContent = text;
+            resultDesc.textContent = desc;
+            resultDisplay.style.opacity = '1';
+        }
+
+        function addToHistory(question, result) {
+            const timestamp = new Date().toLocaleTimeString('zh-CN', { hour: '2-digit', minute: '2-digit' });
+            
+            let resultClass = '';
+            let resultLabel = '';
+            
+            if (result === 'sheng') {
+                resultClass = 'bg-green-100 text-green-800 border-green-200';
+                resultLabel = '圣杯';
+            } else if (result === 'yin') {
+                resultClass = 'bg-red-100 text-red-800 border-red-200';
+                resultLabel = '阴杯';
+            } else {
+                resultClass = 'bg-yellow-100 text-yellow-800 border-yellow-200';
+                resultLabel = '笑杯';
+            }
+
+            const item = { question, result, resultLabel, resultClass, timestamp };
+            history.unshift(item); // Add to top
+            renderHistory();
+        }
+
+        function renderHistory() {
+            historyList.innerHTML = '';
+            historyCount.textContent = `${history.length} 条`;
+
+            if (history.length === 0) {
+                historyList.appendChild(emptyState);
+                emptyState.style.display = 'flex';
+                return;
+            }
+            
+            // Keep empty state in DOM but hidden
+            emptyState.style.display = 'none';
+
+            history.forEach(item => {
+                const div = document.createElement('div');
+                div.className = 'bg-gray-50 p-3 rounded-lg border border-gray-100 text-sm animate-[fadeIn_0.3s_ease-out]';
+                div.innerHTML = `
+                    <div class="flex justify-between items-start mb-1">
+                        <span class="font-bold text-gray-700 flex-1 pr-2 break-words">"${item.question}"</span>
+                        <span class="px-2 py-0.5 rounded text-xs font-bold border ${item.resultClass} whitespace-nowrap">${item.resultLabel}</span>
+                    </div>
+                    <div class="text-xs text-gray-400 text-right">${item.timestamp}</div>
+                `;
+                historyList.appendChild(div);
+            });
+        }
+
+        // --- Interaction Handlers ---
+
+        function handleSubmit() {
+            const text = userInput.value.trim();
+            if (!text) {
+                showToast('请输入你的猜测', 'warning');
+                userInput.focus();
+                return;
+            }
+            if (isAnimating) return;
+
+            const result = determineResult(text);
+            throwCups(result);
+            addToHistory(text, result);
+            userInput.value = '';
+            userInput.focus();
+        }
+
+        function handleClear() {
+            userInput.value = '';
+            userInput.focus();
+        }
+
+        // --- Toast Notification System ---
+        function showToast(message, type = 'info') {
+            const toast = document.createElement('div');
+            
+            let bgClass = 'bg-gray-800';
+            let icon = 'fa-circle-info';
+
+            if (type === 'success') { bgClass = 'bg-green-600'; icon = 'fa-check-circle'; }
+            if (type === 'error') { bgClass = 'bg-red-600'; icon = 'fa-triangle-exclamation'; }
+            if (type === 'warning') { bgClass = 'bg-orange-500'; icon = 'fa-exclamation-circle'; }
+
+            toast.className = `${bgClass} text-white px-6 py-3 rounded-lg shadow-lg flex items-center gap-3 pointer-events-auto toast-enter`;
+            toast.innerHTML = `
+                <i class="fa-solid ${icon}"></i>
+                <span class="font-medium">${message}</span>
+            `;
+
+            toastContainer.appendChild(toast);
+
+            // Trigger animation
+            requestAnimationFrame(() => {
+                toast.classList.remove('toast-enter');
+                toast.classList.add('toast-enter-active');
+            });
+
+            // Remove after 3 seconds
+            setTimeout(() => {
+                toast.classList.remove('toast-enter-active');
+                toast.classList.add('toast-exit-active');
+                toast.addEventListener('transitionend', () => {
+                    toast.remove();
+                });
+            }, 3000);
+        }
+
+        // --- Event Listeners ---
+
+        puzzleSelect.addEventListener('change', (e) => {
+            loadPuzzle(parseInt(e.target.value));
+        });
+
+        btnSubmit.addEventListener('click', handleSubmit);
+        btnClear.addEventListener('click', handleClear);
+        btnReset.addEventListener('click', resetGame);
+        
+        btnVoice.addEventListener('click', () => {
+            if (recognition) {
+                recognition.start();
+            } else {
+                showToast('您的浏览器不支持语音输入', 'error');
+            }
+        });
+
+        // Keyboard Shortcuts
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter' && !e.shiftKey) {
+                e.preventDefault();
+                handleSubmit();
+            }
+            if (e.key === 'Escape') {
+                handleClear();
+            }
+        });
+
+        // Input Focus Animation
+        userInput.addEventListener('focus', () => {
+            userInput.parentElement.classList.add('scale-[1.01]', 'transition-transform');
+        });
+        userInput.addEventListener('blur', () => {
+            userInput.parentElement.classList.remove('scale-[1.01]');
+        });
+
+        // Start
+        init();
+
+    </script>
+</body>
+</html>
